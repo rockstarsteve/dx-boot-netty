@@ -1,0 +1,16 @@
+server:
+  port: 8089
+
+spring:
+  # 文件上传设置大小
+  servlet:
+    multipart:
+      max-file-size: 100MB
+
+netty:
+  #netty端口
+  port: 8070
+  #收连接线程数量
+  bossThreadNum: 1
+  #收连接线程数量
+  workerThreadNum: 1
