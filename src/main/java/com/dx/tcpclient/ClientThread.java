@@ -17,7 +17,7 @@ import java.util.Set;
  * @copyright Copyright (c) 电信
  * @since 2022/8/23
  */
-public class ClientThread implements Runnable{
+public class ClientThread implements Runnable {
 
     private final Selector selector;
 
@@ -28,16 +28,17 @@ public class ClientThread implements Runnable{
     @Override
     public void run() {
         try {
-            for (; ; ) {
+            while (true) {
+                System.out.println("经过了一次遍历11111111111111111");
                 int channels = selector.select();
                 if (channels == 0) {
+                    System.out.println("经过了一次遍历2222222222222222");
                     continue;
                 }
                 Set<SelectionKey> selectionKeySet = selector.selectedKeys();
                 Iterator<SelectionKey> keyIterator = selectionKeySet.iterator();
                 while (keyIterator.hasNext()) {
                     SelectionKey selectionKey = keyIterator.next();
-
                     // 移除集合当前得selectionKey，避免重复处理
                     keyIterator.remove();
                     if (selectionKey.isReadable()) {
@@ -50,7 +51,13 @@ public class ClientThread implements Runnable{
         }
     }
 
-    // 处理可读状态
+    /**
+     * 处理可读状态
+     *
+     * @param selector
+     * @param selectionKey
+     * @throws IOException
+     */
     private void handleRead(Selector selector, SelectionKey selectionKey) throws IOException {
         SocketChannel channel = (SocketChannel) selectionKey.channel();
         ByteBuffer byteBuffer = ByteBuffer.allocate(1024);

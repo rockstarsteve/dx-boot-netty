@@ -1,5 +1,6 @@
 package com.dx.tcpserve;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.group.ChannelGroup;
@@ -42,23 +43,25 @@ public class SocketHandler extends ChannelInboundHandlerAdapter {
         }
         System.out.println();
         // 给其他人转发消息
-//        log.info("clients:", clients);
-//        for (Channel client : clients) {
-//            if (!client.equals(ctx.channel())) {
-//                client.writeAndFlush(data);
-//            }
-//        }
+        log.info("clients:", clients);
+        for (Channel client : clients) {
+            if (!client.equals(ctx.channel())) {
+                client.writeAndFlush(data);
+            }
+        }
     }
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
         log.info("新的客户端链接：" + ctx.channel().id().asLongText());
+        log.info("新的客户端链接：" + ctx.channel().remoteAddress());
         clients.add(ctx.channel());
     }
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         log.info("客户端断开了连接：" + ctx.channel().id().asLongText());
+        log.info("客户端断开了连接：" + ctx.channel().remoteAddress());
         clients.remove(ctx.channel());
     }
 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>websocket和后端连接测试</title>
+</head>
+<body>
+<input type="text" id="inputTxt"/>
+<button onclick="sendMsg()">发送</button>
+<br/>
+<p>接收到的消息：</p>
+<div id="textarea" style="width: 500px;height: 300px;"></div>
+<script>
+    let CHAT = {
+        ws: null,
+        init: function () {
+            //判断浏览器是否支持websocket
+            if (window.WebSocket) {
+                console.log("浏览器支持webso协议");
+                CHAT.ws = new WebSocket(`ws://localhost:8070/ws`)
+                CHAT.ws.onopen = function () {
+                    console.log("连接建立成功！")
+                }
+                CHAT.ws.onclose = function () {
+                    console.log("连接关闭！")
+                }
+                CHAT.ws.onmessage = function (resp) {
+                    console.log("接收到消息！", resp.data)
+                    let elementById = document.getElementById("textarea");
+                    let html = elementById.innerHTML;
+                    elementById.innerHTML = html + "<br/>" + resp.data
+                }
+                CHAT.ws.onerror = function () {
+                    console.log("发生了错误！")
+                }
+            } else {
+                alert("浏览器不支持websocket协议");
+            }
+        },
+        chat: function (data) {
+            let inputData = document.getElementById("inputTxt").value;
+            CHAT.ws.send(inputData)
+        }
+    }
+
+    function sendMsg() {
+        CHAT.chat()
+    }
+
+    CHAT.init()
+</script>
+</body>
+</html>

@@ -21,7 +21,7 @@ import java.util.Scanner;
 public class ChatClient {
 
     public void start(String name) throws IOException {
-        SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress("127.0.0.1", 6164));
+        SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress("127.0.0.1", 8070));
         socketChannel.configureBlocking(false);
         Selector selector = Selector.open();
         socketChannel.register(selector, SelectionKey.OP_READ);
