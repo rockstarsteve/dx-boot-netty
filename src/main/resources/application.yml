@@ -1,13 +1,6 @@
-server:
-  port: 8089
-
 spring:
-
-
-netty:
-  #netty端口
-  port: 8070
-  #收连接线程数量
-  bossThreadNum: 1
-  #收连接线程数量
-  workerThreadNum: 1
+  profiles:
+    # 开发环境
+    active: dev
+    # 生产环境
+#    active: dev

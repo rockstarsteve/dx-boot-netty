@@ -1,7 +1,7 @@
 package com.dx.chat.user.mapper;
 
-import com.dx.chat.user.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.dx.chat.user.entity.User;
 
 /**
  * <p>
