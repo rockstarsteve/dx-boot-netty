@@ -1,4 +1,4 @@
-# dx-boot-netty
+# dx-caht
 
 
 
@@ -43,7 +43,7 @@
 
 
 
-
+## netty
 
 > netty框架是一个主从Reactor多线程，这个地方理解不透彻
 > bossGroup是负责接收请求，Reactor的核心在于一个线程可以处理多个请求，代码核心是for循环
