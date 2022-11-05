@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>websocket和后端连接测试</title>
+    <title>用ip来使用websocket和后端连接测试</title>
 </head>
 <body>
 <input type="text" id="inputTxt"/>
@@ -17,12 +17,16 @@
             //判断浏览器是否支持websocket
             if (window.WebSocket) {
                 console.log("浏览器支持webso协议");
+                //如果已经打开了，那么就直接返回
+                if (CHAT.ws != null && CHAT.ws != undefined && CHAT.ws.readyState == WebSocket.OPEN) {
+                    return false;
+                }
                 CHAT.ws = new WebSocket(`ws://127.0.0.1:8070/ws`)
                 CHAT.ws.onopen = function () {
                     console.log("连接建立成功！")
                 }
                 CHAT.ws.onclose = function () {
-                    console.log("连接关闭！")
+                    console.log("连接关闭！");
                 }
                 CHAT.ws.onmessage = function (resp) {
                     console.log("接收到消息！", resp.data)
@@ -40,14 +44,33 @@
         chat: function (data) {
             let inputData = document.getElementById("inputTxt").value;
             CHAT.ws.send(inputData)
+        },
+        keepalive: function (){
+            CHAT.ws.send("发送心跳。。。")
         }
     }
 
+    //发送消息
     function sendMsg() {
         CHAT.chat()
     }
 
+    //初始化
     CHAT.init()
+    //如果没有连接，再次重试
+    let times = 1;
+    let loop = setInterval(() => {
+        if (CHAT.ws.readyState != WebSocket.OPEN) {
+            //重试连接
+            console.log("重试连接服务器")
+            CHAT.init()
+            times = 0;
+        } else {
+            console.log("持续时间：", 5 * (times++))
+            CHAT.keepalive();
+        }
+    }, 5000)
+
 </script>
 </body>
 </html>

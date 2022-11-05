@@ -55,7 +55,7 @@ mybatis-plus:
   #配置扫描xml
   mapper-locations:
     # *.xml的具体路径
-    - classpath*:/mapper/**/*.xml
+    - classpath*:mapper/**/*.xml
 
 
 #配置控制台打印日志Debug
